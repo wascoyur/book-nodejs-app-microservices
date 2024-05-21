@@ -6,6 +6,19 @@ export default class GetUserFilterDto {
     description: '',
     type: [String],
     required: false,
+    example: ['518-f7193-36b'],
+  })
+  @IsOptional()
+  @IsString({
+    each: true,
+    message: 'Поля в массиве clientIds должны быть строками',
+  })
+  readonly userIds?: string[];
+
+  @ApiProperty({
+    description: '',
+    type: [String],
+    required: false,
     example: ['79001110102', '79001110103'],
   })
   @IsOptional()

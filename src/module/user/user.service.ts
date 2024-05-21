@@ -4,12 +4,22 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
 import * as crypto from 'node:crypto';
 import * as argon from 'argon2';
+import GetUserFilterDto from './dto/get-users-filter.dto';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
   async create(user: CreateUserDto): Promise<void> {
     console.log(user);
+    const userExist = await this.userRepository.checkExistUser({
+      phone: user.phone,
+      login: user.login,
+    });
+
+    if (userExist) {
+      throw new ConflictException('User already Exist');
+    }
 
     const salt = crypto.randomBytes(32);
     const hash = await argon.hash(user.password, { salt });
@@ -21,19 +31,28 @@ export class UserService {
     });
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(
+    getUserFilterDto: GetUserFilterDto,
+  ): Promise<{ items: UserDto[]; total: number }> {
+    const { items: users, total } =
+      await this.userRepository.findAndCount(getUserFilterDto);
+    const dots = users.map((user) => {
+      return new UserDto(user);
+    });
+    return { items: dots, total };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    console.log(`This action returns a #${id} user`);
+    return this.userRepository.findById(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    console.log(`This action updates a #${id} user`);
+    return this.userRepository.updateUser({ userId: id, ...updateUserDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return this.userRepository.deleteUser(id);
   }
 }

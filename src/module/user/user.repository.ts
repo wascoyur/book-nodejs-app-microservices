@@ -1,7 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { DeepPartial, Repository, SelectQueryBuilder } from 'typeorm';
-import { CheckExsistUserParams, FindUserParams } from './user.types';
+import { CheckExsistUserParams } from './user.types';
+import GetUserFilterDto from './dto/get-users-filter.dto';
 
 export class UserRepository {
   constructor(
@@ -25,7 +26,7 @@ export class UserRepository {
   }
 
   async findAndCount(
-    params: FindUserParams,
+    params: GetUserFilterDto,
   ): Promise<{ items: UserEntity[]; total: number }> {
     const [items, total] = await this.qb(params).getManyAndCount();
     return { items, total };
@@ -47,10 +48,10 @@ export class UserRepository {
     query.where('user.login= :login', { login: params.login });
     query.orWhere('user.phone=:phone', { phone: params.phone });
     const result = await query.getOne();
-    return result ? true : false;
+    return !!result;
   }
 
-  qb(params: FindUserParams, alias = 'user'): SelectQueryBuilder<UserEntity> {
+  qb(params: GetUserFilterDto, alias = 'user'): SelectQueryBuilder<UserEntity> {
     const query = this.userRepository.createQueryBuilder(alias);
     if (params?.userIds?.length) {
       query.andWhere(`${alias}.userId in (:...userIds)`, {
