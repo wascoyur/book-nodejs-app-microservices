@@ -13,6 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import GetUserFilterDto from './dto/get-users-filter.dto';
 import { UserDto } from './dto/user.dto';
+import { SignInDto } from './dto/sign-in.dto';
 
 @Controller('user')
 export class UserController {
@@ -43,5 +44,10 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
+  }
+
+  @Get('/verivication')
+  verification(@Query() dto: SignInDto): Promise<boolean> {
+    return this.userService.verivication(dto);
   }
 }

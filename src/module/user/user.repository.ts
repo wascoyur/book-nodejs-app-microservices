@@ -1,6 +1,11 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { DeepPartial, Repository, SelectQueryBuilder } from 'typeorm';
+import {
+  DeepPartial,
+  FindOptionsWhere,
+  Repository,
+  SelectQueryBuilder,
+} from 'typeorm';
 import { CheckExsistUserParams } from './user.types';
 import GetUserFilterDto from './dto/get-users-filter.dto';
 
@@ -70,5 +75,10 @@ export class UserRepository {
       query.skip(params.skip);
     }
     return query;
+  }
+
+  async findByLogin(login: string): Promise<UserEntity | undefined> {
+    const attr: FindOptionsWhere<UserEntity> = { login };
+    return this.userRepository.findOneBy(attr);
   }
 }
