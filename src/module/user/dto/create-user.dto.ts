@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -54,4 +54,13 @@ export class CreateUserDto {
   @Expose()
   @IsString()
   email: string;
+
+  @ApiProperty({
+    description: 'user role',
+    required: true,
+    type: String,
+  })
+  @Expose()
+  @IsString()
+  role: string;
 }

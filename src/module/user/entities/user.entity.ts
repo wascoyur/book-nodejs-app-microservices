@@ -22,4 +22,7 @@ export class UserEntity {
 
   @Column('varchar', { comment: 'password salt' })
   passwordSalt: string;
+
+  @Column('varchar', { comment: 'user role', nullable: false, default: 'USER' })
+  role: string;
 }
