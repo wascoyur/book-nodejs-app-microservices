@@ -47,6 +47,15 @@ export class UserDto {
   @IsString()
   email: string;
 
+  @ApiProperty({
+    description: 'User role',
+    required: true,
+    type: String,
+  })
+  @Expose()
+  @IsString()
+  role: string;
+
   constructor(entity: Partial<UserEntity>) {
     return plainToInstance(UserDto, entity, { excludeExtraneousValues: true });
   }
