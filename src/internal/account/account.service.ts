@@ -14,8 +14,9 @@ export class InternalAccountService {
     private readonly httpService: HttpService,
   ) {}
 
-  async verivication(params: VerificationParams): Promise<boolean> {
-    const url = `${this.config.get(`ACCOUNT_URL`)}/v1/user/verification`;
+  async verify(params: VerificationParams): Promise<boolean> {
+    const url = `${this.config.get(`ACCOUNT_URL`)}/v1/user/verify`;
+    console.log(url);
     const res = await this.httpService.axiosRef.get(url, { params });
     return res.data;
   }

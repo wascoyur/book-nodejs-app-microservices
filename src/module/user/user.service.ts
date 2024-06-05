@@ -60,14 +60,12 @@ export class UserService {
   remove(id: string) {
     return this.userRepository.deleteUser(id);
   }
-  async verivication(obj: SignInDto): Promise<boolean> {
+  async verification(obj: SignInDto): Promise<boolean> {
     const { login, password } = obj;
     const user = await this.userRepository.findByLogin(login);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return argon.verify(password, user.passwordHash, {
-      secret: Buffer.from(user.passwordSalt),
-    });
+    return await argon.verify(user.passwordHash, password);
   }
 }

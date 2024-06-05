@@ -21,4 +21,5 @@ export interface Account {
   laastName: string;
   middleName: string;
   password: string;
+  role: string;
 }

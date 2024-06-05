@@ -15,7 +15,7 @@ import GetUserFilterDto from './dto/get-users-filter.dto';
 import { UserDto } from './dto/user.dto';
 import { SignInDto } from './dto/sign-in.dto';
 
-@Controller('user')
+@Controller('user') // Изменено здесь, чтобы указать корневой маршрут '/user'
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -31,23 +31,23 @@ export class UserController {
     return this.userService.findAll(getUserFilterDto);
   }
 
-  @Get(':id')
+  @Get(':id') // Этот метод теперь обрабатывает запросы к '/user/:id'
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':id') // Этот метод также обрабатывает запросы к '/user/:id'
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
-  @Delete(':id')
+  @Delete(':id') // Этот метод обрабатывает запросы к '/user/:id'
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
 
-  @Get('/verivication')
-  verification(@Query() dto: SignInDto): Promise<boolean> {
-    return this.userService.verivication(dto);
+  @Post('/verify') // Теперь этот метод обрабатывает запросы к '/user/verify'
+  verification(@Body() dto: SignInDto): Promise<boolean> {
+    return this.userService.verification(dto);
   }
 }
