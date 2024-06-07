@@ -6,7 +6,7 @@ export class JwtDto {
     description: 'access JWT',
     required: true,
   })
-  access: true;
+  access: string;
 
   @ApiProperty({
     type: String,
@@ -15,6 +15,7 @@ export class JwtDto {
   })
   refresh: string;
 }
+
 export class RefreshJwtDto {
   @ApiProperty({
     type: String,
