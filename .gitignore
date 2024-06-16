@@ -1,7 +1,4 @@
 /dist/
 /volumes/**/*
-/local_env/
-/account/.env
-*.env
 /.idea/
 
