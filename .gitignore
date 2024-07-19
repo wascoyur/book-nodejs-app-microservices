@@ -6,3 +6,5 @@ node_modules
 /account/node_modules/
 /auth/dist/
 /auth/node_modules/
+/account/node_modules/
+
